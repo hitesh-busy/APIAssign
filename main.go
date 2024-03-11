@@ -12,7 +12,6 @@ import (
 
 var ansWeathers []interface{}
 
-
 type WeatherInfo struct {
 	Name    string   `json:"name"`
 	Weather string   `json:"weather"`
@@ -28,11 +27,11 @@ type WeatherResponse struct {
 func PopulateAnsStruct(weather []WeatherInfo) error {
 
 	for _, v := range weather {
-		
+
 		//make an array for rach
 		var temp []interface{}
 		//\d: Matches any digit (0-9).
-	//+: Matches one or more occurrences of the preceding element (in this case, \d).
+		//+: Matches one or more occurrences of the preceding element (in this case, \d).
 		pattern := regexp.MustCompile(`\d+`) //fix the pattern for int values
 
 		weather, _ := strconv.Atoi(pattern.FindString(v.Weather))
@@ -75,7 +74,11 @@ func fetchApi(apiUrl string) error {
 }
 
 func main() {
-	apiUrl := "https://jsonmock.hackerrank.com/api/weather/search?name=ab"
+	fmt.Println("Weather API. Please enter your desired string to be searched ")
+	var name string
+	fmt.Scanln(&name)
+
+	apiUrl := fmt.Sprintf("https://jsonmock.hackerrank.com/api/weather/search?name=%s", name)
 
 	response, err := http.Get(apiUrl)
 	if err != nil {
@@ -103,10 +106,9 @@ func main() {
 		if err != nil {
 			fmt.Println("error fetching  API", err.Error())
 		}
-		//fmt.Println("Succesfully fetched API", newUrl)
 	}
 
 	fmt.Println("Length of the final ans Slice is ", len(ansWeathers))
-	fmt.Println("final Ans is ", ansWeathers)
+	fmt.Println("final Ans is \n", ansWeathers)
 
 }
